@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <STYLE>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+    </STYLE>
+</head>
+
+<body>
+    <canvas class="Ocan"></canvas>
+    <script>
+        var Ocan = document.querySelector('.Ocan');
+        var context = Ocan.getContext('2d');
+        Ocan.width = window.innerWidth;
+        Ocan.height = window.innerHeight;
+        Ocan.style.background = "#999";
+
+        // context.fillRect(100,100,50,50);
+        // context.colate(10);
+
+        context.save();
+        context.beginPath();
+        context.translate(100, 100);
+        context.rotate(Math.PI/4)
+        context.fillRect(0, 0, 25, 50);
+        context.fillRect(-25, 0, 25, 50);
+        context.arc(-25,25,25, 0, Math.PI * 2, 0);
+        context.arc(0,0,25, 0, Math.PI * 2, 0);
+        context.fill();
+    </script>
+</body>
+
+</html>

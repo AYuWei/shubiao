@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>鼠标炫酷效果</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas class="Ocanvas"></canvas>
+    <script>
+        var canvas = document.getElementsByClassName('Ocanvas')[0];
+        var context = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        canvas.style.background = "#000";
+
+        // 开关
+        var isoff = false;
+
+        // 存放小圆
+        var circleList = [];
+        // 画板注册移动事件
+        canvas.addEventListener('mousemove', function (e) {
+            circleList.push(new Circle(e.pageX, e.pageY));
+        });
+        // 生成随机数
+        function random(min, max) {
+            return Math.round(Math.random() * (max - min) + min);
+        }
+        // Circle画圆圈
+        function Circle(x, y) {
+            this.x = x;
+            this.y = y;
+
+            this.vx = Math.random() - 0.5;
+            this.vy = Math.random() - 0.5;
+
+            this.option = 1;
+
+            this.color = `rgb(${random(0, 255)},${random(0, 255)},${random(0, 255)})`;
+            this.draw();
+        }
+        Circle.prototype = {
+            // 绘制圆
+            draw() {
+                context.beginPath();
+                context.fillStyle = this.color;
+                context.globalAlpha = this.option;
+                context.globalCompositeOperation = 'lighter'
+                context.arc(this.x, this.y, 20, 0, Math.PI * 2, 0);
+                // context.fill();
+
+                // 画心
+                // context.fillRect(this.x, this.y-25, 25, 50);
+                // context.fillRect(this.x-25, this.y-25, 25, 50);
+                // context.arc(this.x-25, this.y, 25, 0, Math.PI * 2, 0);
+                // context.arc(this.x, this.y-25, 25, 0, Math.PI * 2, 0);
+                // context.rotate(Math.PI / 4)
+                context.fill();
+
+                this.updata();
+            },
+            // 让圆运动
+            updata() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.option *= 0.99;
+            }
+        }
+
+        // 让其运动
+        function render() {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            circleList.forEach(function (ele, index) {
+                ele.draw();
+                if (ele.option < 0.02) {
+                    circleList.splice(index, 1)
+                }
+            });
+            requestAnimationFrame(render);
+        }
+
+        render();
+    </script>
+</body>
+
+</html>
